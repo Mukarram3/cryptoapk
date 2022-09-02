@@ -36,7 +36,7 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
         // return $this->respondWithToken($token);
-        return response()->json(['token' => $token, 'authuser' => auth()->user()]);
+        return response()->json(['success' => true,'token' => $token, 'authuser' => auth()->user()]);
     }
 
     /**
@@ -58,7 +58,7 @@ class AuthController extends Controller
     {
         auth()->logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json(['success' => true, 'message' => 'Successfully logged out']);
     }
 
     /**
@@ -92,7 +92,7 @@ class AuthController extends Controller
 
         $table= User::where('name', $request->name)->orwhere('email', $request->email)->first();
         if($table){
-            return response()->json(['message' => 'Username or Email already exist']);
+            return response()->json(['success' => false, 'message' => 'Username or Email already exist']);
         }
         else{
             $data=array();
@@ -107,7 +107,7 @@ class AuthController extends Controller
 
             $token = auth()->attempt($credentials);
       
-            return response()->json(['token' => $token, 'authuser' => auth()->user()]);
+            return response()->json(['success' => true, 'token' => $token, 'authuser' => auth()->user()]);
 
             // return $this->login($request);
         }
