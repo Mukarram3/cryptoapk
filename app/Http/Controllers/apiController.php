@@ -21,6 +21,7 @@ class apiController extends Controller
 
         else{
             return response()->json(['message' => 'Wrong Payment Address']);
+            
         }
 
         $Transferdetail->amountsend= $request->amountsend;
@@ -63,5 +64,8 @@ class apiController extends Controller
         }
     }
 
+    public function profile(Request $request){
+        return response()->json(['user' => User::find($request->id)]);
+    }
 
 }

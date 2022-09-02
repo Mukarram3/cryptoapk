@@ -35,5 +35,6 @@ Route::group([
     Route::post('transfer',[apiController::class,'transfer']);
     Route::post('transferdetail',[apiController::class,'tranferdetails']);
     Route::post('findaccount',[apiController::class,'findaccount']);
+    Route::post('profile',[apiController::class,'profile']);
 
 });
