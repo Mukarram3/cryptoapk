@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 use Illuminate\Support\Str;;
 use DB;
 use App\Http\Controllers\Controller;
@@ -26,15 +27,16 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login()
+    public function login(Request $request)
     {
+
         $credentials = request(['email', 'password']);
 
         if (! $token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-
-        return $this->respondWithToken($token);
+        // return $this->respondWithToken($token);
+        return response()->json(['token' => $token, 'authuser' => auth()->user()]);
     }
 
     /**
@@ -87,22 +89,31 @@ class AuthController extends Controller
 
     public function signup(Request $request){
 
-        //        return $request->all();
-        //        die();
+
+        $table= User::where('name', $request->name)->orwhere('email', $request->email)->first();
+        if($table){
+            return response()->json(['message' => 'Username or Email already exist']);
+        }
+        else{
+            $data=array();
+            $data["name"]=$request->name;
+            $data["email"]=$request->email;
+            $data["paymentaddress"]=Str::random(30);
+            $data["password"]=Hash::make($request->password);
+            DB::table('users')->insert($data);
+    
+
+            $credentials = request(['email', 'password']);
+
+            $token = auth()->attempt($credentials);
+      
+            return response()->json(['token' => $token, 'authuser' => auth()->user()]);
+
+            // return $this->login($request);
+        }
+ 
         
-                $validate = $request->validate([
-                    'email' => 'required',
-                    'password' => 'required',
-                ]);
-        
-                $data=array();
-                $data["name"]=$request->name;
-                $data["email"]=$request->email;
-                $data["paymentaddress"]=Str::random(30);
-                $data["password"]=Hash::make($request->password);
-                DB::table('users')->insert($data);
-        
-                return $this->login($request);
+               
             }
 
 }

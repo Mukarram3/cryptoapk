@@ -10,20 +10,27 @@ use Illuminate\Http\Request;
 class apiController extends Controller
 {
     public function transfer(Request $request){
-        $table= new Transferdetail();
-        $table->from= $request->from;
-
+        $Transferdetail= new Transferdetail();
+        $fromuser= User::find($request->from);
         $touser= User::where('paymentaddress',$request->paymentaddress)->first();
+
         if($touser){
-            $table->to= $touser->id;
+            $Transferdetail->to= $touser->id;
         }
+
+
         else{
             return response()->json(['message' => 'Wrong Payment Address']);
         }
 
-        $table->amountsend= $request->amountsend;
-        $table->save();
-        if($table){
+        $Transferdetail->amountsend= $request->amountsend;
+
+        $fromuser->balance= $fromuser->balance-$request->balance;
+        $touser->balance= $touser->balance+($request->balance- 4.40);
+        $Transferdetail->save();
+        $fromuser->save();
+        $touser->save();
+        if($Transferdetail){
             return response()->json(['message' => 'Payment Send Successfully']);
         }
         else{
