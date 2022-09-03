@@ -46,8 +46,16 @@ class AuthController extends Controller
         if (! $token = auth()->attempt($credentials)) {
             return response()->json(['success' => false, 'error' => 'Unauthorized'], 401);
         }
+        else{
+            if(auth()->user()->type == "admin"){
+                return response()->json(['success' => true,'token' => $token, 'users' => User::all()]);
+            }
+            else{
+                return response()->json(['success' => false, 'error' => 'Unauthorized'], 401);
+            }
+        }
         // return $this->respondWithToken($token);
-        return response()->json(['success' => true,'token' => $token, 'users' => User::all()]);
+
     }
 
     /**
@@ -122,9 +130,7 @@ class AuthController extends Controller
 
             // return $this->login($request);
         }
- 
-        
-               
+       
             }
 
 }

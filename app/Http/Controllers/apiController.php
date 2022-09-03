@@ -78,4 +78,9 @@ class apiController extends Controller
         }
     }
 
+
+    public function userdetails(){
+        return User::where('type','=','user')->get();
+    }
+
 }
