@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->float('balance')->default('0');
+            $table->decimal('balance', $precision = 8, $scale = 4)->default('0');
             $table->string('paymentaddress');
             $table->rememberToken();
             $table->timestamps();
