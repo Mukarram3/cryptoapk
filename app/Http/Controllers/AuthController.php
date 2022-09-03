@@ -48,7 +48,7 @@ class AuthController extends Controller
         }
         else{
             if(auth()->user()->type == "admin"){
-                return response()->json(['success' => true,'token' => $token, 'users' => User::all()]);
+                return response()->json(['success' => true,'token' => $token, 'authuser' => auth()->user()]);
             }
             else{
                 return response()->json(['success' => false, 'error' => 'Unauthorized'], 401);

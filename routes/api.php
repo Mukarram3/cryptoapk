@@ -39,5 +39,6 @@ Route::group([
     Route::post('profile',[apiController::class,'profile']);
     Route::post('checkbalance',[apiController::class,'checkbalance']);
     Route::post('userdetails',[apiController::class,'userdetails']);
+    Route::post('addbalance',[apiController::class,'addbalance']);
 
 });

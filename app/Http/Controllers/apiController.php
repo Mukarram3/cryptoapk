@@ -43,13 +43,17 @@ class apiController extends Controller
     }
 
     public function tranferdetails(Request $request){
-        $table= Transferdetail::where('from',$request->id)->orwhere('to',$request->id)->with('hasusers')->get();
-        if($table){
-            return response()->json(['success' => true,'data' => $table]); 
-        }
-        else{
-            return response()->json(['success' => false,'message' => 'No Transaction Found']);
-        }
+        // $table= User::where('from',$request->id)->orwhere('to',$request->id)->with('hasusers')->get();
+        $table= User::where('id',$request->id)->with('hastranferdetails')->get();
+
+        return $table;
+
+        // if($table){
+        //     return response()->json(['success' => true,'data' => $table]); 
+        // }
+        // else{
+        //     return response()->json(['success' => false,'message' => 'No Transaction Found']);
+        // }
 
     }
 
@@ -80,7 +84,17 @@ class apiController extends Controller
 
 
     public function userdetails(){
-        return User::where('type','=','user')->get();
+        return response()->json(['success' => true,'users' => User::where('type','=','user')->get()]);
     }
+
+    public function addbalance(Request $request){
+        $admin= User::find($request->id);
+        $admin->balance= $admin->balance + $request->addbalance;
+        $admin->save();
+
+        return response()->json(['success' => true,'message' => 'Balance Added Successfully']);
+
+    }
+
 
 }
