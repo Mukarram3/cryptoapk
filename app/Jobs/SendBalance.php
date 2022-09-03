@@ -52,21 +52,19 @@ class SendBalance implements ShouldQueue
             $sendtouser->balance= $sendtouser->balance + ($this->balance- 4.40);
         }
 
-        else if($this->timedelay == 86400){
+        else if($this->timedelay == 1){
             $sendtouser->balance= $sendtouser->balance + ($this->balance- 1.20);
         }
 
-        else if($this->timedelay == 172800){
+        else if($this->timedelay == 2880){
             $sendtouser->balance= $sendtouser->balance + ($this->balance- 2.60);
         }
 
-        else if($this->timedelay == 259200){
+        else if($this->timedelay == 4320){
             $sendtouser->balance= $sendtouser->balance + ($this->balance- 5.25);
         }
 
         
-        
-
         $Transferdetail->save();
         $sendtouser->save();
     }

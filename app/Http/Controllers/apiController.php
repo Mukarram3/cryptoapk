@@ -14,23 +14,23 @@ class apiController extends Controller
 
         $fromuser= User::find($request->from);
 
-
-        if($fromuser->balance > $request->balance){
+        if($fromuser->balance >= $request->amountsend){
 
             $fromuser->balance= $fromuser->balance-$request->amountsend;
 
             $touser= User::where('paymentaddress',$request->paymentaddress)->first();
             $balance= $request->amountsend;
             $timedelay=$request->timedelay;
-            SendBalance::dispatch($touser,$fromuser,$balance,$timedelay)->delay(now()->addMinutes($request->timedelay));
+
+            SendBalance::dispatch($touser,$fromuser,$balance,$timedelay)->delay(now()->addMinutes($timedelay));
     
             $fromuser->save();
           
             if($fromuser){
-                return response()->json(['message' => true]);
+                return response()->json(['success' => true]);
             }
             else{
-                return response()->json(['message' => false]);
+                return response()->json(['success' => false]);
             }
         
         }
