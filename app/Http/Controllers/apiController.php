@@ -46,14 +46,12 @@ class apiController extends Controller
         $table= Transferdetail::where('from',$request->id)->orwhere('to',$request->id)->with('fromuser','touser')->get();
         // $table= User::where('id',$request->id)->with('hastranferdetails')->get();
 
-        return $table;
-
-        // if($table){
-        //     return response()->json(['success' => true,'data' => $table]); 
-        // }
-        // else{
-        //     return response()->json(['success' => false,'message' => 'No Transaction Found']);
-        // }
+        if($table){
+            return response()->json(['success' => true,'data' => $table]); 
+        }
+        else{
+            return response()->json(['success' => false,'message' => 'No Transaction Found']);
+        }
 
     }
 
