@@ -43,8 +43,8 @@ class apiController extends Controller
     }
 
     public function tranferdetails(Request $request){
-        // $table= User::where('from',$request->id)->orwhere('to',$request->id)->with('hasusers')->get();
-        $table= User::where('id',$request->id)->with('hastranferdetails')->get();
+        $table= Transferdetail::where('from',$request->id)->orwhere('to',$request->id)->with('fromuser','touser')->get();
+        // $table= User::where('id',$request->id)->with('hastranferdetails')->get();
 
         return $table;
 

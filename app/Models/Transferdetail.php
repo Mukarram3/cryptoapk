@@ -12,8 +12,12 @@ class Transferdetail extends Model
     protected $fillable= ['id','from','to','amountsend'];
 
 
-    public function hasusers(){
+    public function fromuser(){
         return $this->belongsTo(User::class,'from');
+    }
+
+    public function touser(){
+        return $this->belongsTo(User::class,'to');
     }
 
 }
