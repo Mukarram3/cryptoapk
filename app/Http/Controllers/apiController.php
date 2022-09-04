@@ -14,7 +14,7 @@ class apiController extends Controller
 
         $fromuser= User::find($request->from);
 
-        if($fromuser->balance >= $request->amountsend){
+        if($fromuser->balance >= $request->amountsend && $request->amountsend > 0){
 
             $fromuser->balance= $fromuser->balance-$request->amountsend;
 
