@@ -16,10 +16,11 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         DB::table('users')->insert([
-            'name' => 'basic',
-            'email' => '3',
-            'password' => '12',
+            'name' => 'admin',
+            'email' => 'admin@gmail.com',
+            'password' => 'adminadmin',
             'balance' => '500',
+            'type' => 'admin',
             'paymentaddress' => Str::random(30),
             'password' => Hash::make('adminadmin'),
             'verified' => true
