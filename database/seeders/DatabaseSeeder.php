@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'basic',
             'email' => '3',
             'password' => '12',
+            'balance' => '500',
             'paymentaddress' => Str::random(30),
             'password' => Hash::make('adminadmin'),
             'verified' => true
