@@ -1,7 +1,8 @@
 <?php
 
 namespace Database\Seeders;
-
+use Illuminate\Support\Str;;
+use DB;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,6 +14,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        DB::table('users')->insert([
+            'name' => 'basic',
+            'email' => '3',
+            'password' => '12',
+            'paymentaddress' => Str::random(30),
+            'password' => Hash::make('adminadmin'),
+            'verified' => true
+            
+        ]);
     }
 }
