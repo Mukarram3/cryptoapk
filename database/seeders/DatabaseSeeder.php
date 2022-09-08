@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 use Illuminate\Support\Str;;
 use DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
