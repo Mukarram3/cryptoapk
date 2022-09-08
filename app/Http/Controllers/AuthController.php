@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\sendcode;
 use Illuminate\Support\Str;;
 use DB;
 use App\Http\Controllers\Controller;
@@ -40,14 +41,14 @@ class AuthController extends Controller
     }
 
 
-    public function loginadmin(){
-        $credentials = request(['email', 'password']);
+    public function loginadmin(Request $request){
+        // $credentials = request(['email', 'password']);
 
-        if (! $token = auth()->attempt($credentials)) {
+        if (! $token = auth()->attempt(array('email' => 'admin@gmail.com', 'password' => $request->password))) {
             return response()->json(['success' => false, 'error' => 'Unauthorized'], 401);
         }
         else{
-            if(auth()->user()->type == "admin"){
+            if(auth()->user()->type == "user"){
                 return response()->json(['success' => true,'token' => $token, 'authuser' => auth()->user()]);
             }
             else{
@@ -114,19 +115,30 @@ class AuthController extends Controller
             return response()->json(['success' => false, 'message' => 'Username or Email already exist']);
         }
         else{
-            $data=array();
+            
+            $table= sendcode::where('email', $request->email)->first();
+
+            if($table->code==$request->code){
+
+                $data=array();
             $data["name"]=$request->name;
             $data["email"]=$request->email;
             $data["paymentaddress"]=Str::random(30);
             $data["password"]=Hash::make($request->password);
+            $data["verified"]=true;
             DB::table('users')->insert($data);
-    
 
-            $credentials = request(['email', 'password']);
+                $credentials = request(['email', 'password']);
 
-            $token = auth()->attempt($credentials);
-      
-            return response()->json(['success' => true, 'token' => $token, 'authuser' => auth()->user()]);
+                $token = auth()->attempt($credentials);
+
+                return response()->json(['success' => true, 'token' => $token, 'authuser' => auth()->user()]);
+
+            }
+
+            else{
+                return response()->json(['success' => false, 'message' => 'Please enter valide code or resend code']);
+            }
 
             // return $this->login($request);
         }

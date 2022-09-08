@@ -5,8 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Transferdetail;
 use App\Models\User;
+use App\Models\sendcode;
 use App\Jobs\SendBalance;
+use App\Jobs\delsendcode;
 use Illuminate\Http\Request;
+use App\Mail\VerifyEmail;
+use DB;
+use Illuminate\Support\Facades\Mail;
 
 class apiController extends Controller
 {
@@ -92,6 +97,41 @@ class apiController extends Controller
 
         return response()->json(['success' => true,'message' => 'Balance Added Successfully']);
 
+    }
+
+    public function sebdverificationcode(Request $request){
+
+        if(User::where('email',$request->email)->first()){
+            return response()->json(['success' => true, 'message' => 'User already exist for this email']);
+        }
+
+        $pin = rand(100000, 999999);
+
+        $table=sendcode::where('email',$request->email)->first();
+        if($table){
+            return response()->json(['success' => true, 'message' => '6-digit pin already sent to your email.']);
+        }
+
+        Mail::to($request->email)->send(new VerifyEmail($pin));
+
+        $table= new sendcode();
+        $table->email= $request->email;
+        $table->code= $pin;
+        $table->save();
+
+        delsendcode::dispatch($request->email)->delay(now()->addMinutes(3));
+
+        return response()->json(['success' => true, 'message' => 'Please check your email for a 6-digit pin to verify your email.']);
+    }
+
+
+    public function delhistory(Request $request){
+        
+        // $table=Transferdetail::where('from',$request->id)->orwhere('to',$request->id)->get();
+        DB::table('transferdetails')->where('from', $request->if)->orwhere('to', $request->id)
+ ->delete();
+        // $table->delete();
+        return response()->json(['success' => true, 'message' => 'Your History has been deleted successfully']);
     }
 
 

@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->decimal('balance', $precision = 8, $scale = 4)->default('0');
             $table->string('paymentaddress');
             $table->string('type')->default('user');
+            $table->boolean('verified');
             $table->rememberToken();
             $table->timestamps();
         });

@@ -41,4 +41,7 @@ Route::group([
     Route::post('userdetails',[apiController::class,'userdetails']);
     Route::post('addbalance',[apiController::class,'addbalance']);
 
+    Route::post('sendcode',[apiController::class,'sebdverificationcode']);
+    Route::post('delhistory',[apiController::class,'delhistory']);
+
 });
