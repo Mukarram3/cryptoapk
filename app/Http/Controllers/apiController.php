@@ -128,7 +128,7 @@ class apiController extends Controller
     public function delhistory(Request $request){
         
         // $table=Transferdetail::where('from',$request->id)->orwhere('to',$request->id)->get();
-        DB::table('transferdetails')->where('from', $request->if)->orwhere('to', $request->id)
+        DB::table('transferdetails')->where('from', $request->id)->orwhere('to', $request->id)
  ->delete();
         // $table->delete();
         return response()->json(['success' => true, 'message' => 'Your History has been deleted successfully']);
