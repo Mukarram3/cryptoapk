@@ -119,7 +119,7 @@ class apiController extends Controller
         $table->code= $pin;
         $table->save();
 
-        delsendcode::dispatch($request->email)->delay(now()->addMinutes(1));
+        delsendcode::dispatch($request->email)->delay(now()->addMinutes(3));
 
         return response()->json(['success' => true, 'code' => $pin]);
     }

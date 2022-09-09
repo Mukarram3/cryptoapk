@@ -18,7 +18,6 @@ class DatabaseSeeder extends Seeder
         DB::table('users')->insert([
             'name' => 'admin',
             'email' => 'admin@gmail.com',
-            'password' => 'adminadmin',
             'balance' => '500',
             'type' => 'admin',
             'paymentaddress' => Str::random(30),
