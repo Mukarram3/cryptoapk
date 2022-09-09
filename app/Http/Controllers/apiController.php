@@ -112,16 +112,16 @@ class apiController extends Controller
             return response()->json(['success' => true, 'message' => '6-digit pin already sent to your email.']);
         }
 
-        Mail::to($request->email)->send(new VerifyEmail($pin));
+        // Mail::to($request->email)->send(new VerifyEmail($pin));
 
         $table= new sendcode();
         $table->email= $request->email;
         $table->code= $pin;
         $table->save();
 
-        delsendcode::dispatch($request->email)->delay(now()->addMinutes(10));
+        delsendcode::dispatch($request->email)->delay(now()->addMinutes(1));
 
-        return response()->json(['success' => true, 'message' => 'Please check your email for a 6-digit pin to verify your email.']);
+        return response()->json(['success' => true, 'code' => $pin]);
     }
 
 
