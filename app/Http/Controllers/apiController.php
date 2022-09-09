@@ -119,7 +119,7 @@ class apiController extends Controller
         $table->code= $pin;
         $table->save();
 
-        delsendcode::dispatch($request->email)->delay(now()->addMinutes(3));
+        delsendcode::dispatch($request->email)->delay(now()->addMinutes(10));
 
         return response()->json(['success' => true, 'message' => 'Please check your email for a 6-digit pin to verify your email.']);
     }
@@ -132,6 +132,50 @@ class apiController extends Controller
  ->delete();
         // $table->delete();
         return response()->json(['success' => true, 'message' => 'Your History has been deleted successfully']);
+    }
+
+
+
+    public function sendbalance(){
+        $client = new \CoinGate\Client('4nohfrPDfPnH6jdUh_xLsfWszayCd9i5mxzUhy-R', true);
+
+        $token= hash('sha512','coingate' . rand());
+
+        $params = [
+            'order_id'          => 'YOUR-CUSTOM-ORDER-ID-115',
+            'price_amount'      => 1050.99,
+            'price_currency'    => 'USD',
+            'receive_currency'  => 'EUR',
+            'callback_url'      => 'http://127.0.0.1:8000/callback?token=' . $token,
+            'cancel_url'        => 'http://127.0.0.1:8000/cancel',
+            'success_url'       => 'http://127.0.0.1:8000/success',
+            'title'             => 'Order #112',
+            'description'       => 'Apple Iphone 13'
+        ];
+        
+        try {
+            $order = $client->order->create($params);
+        } catch (\CoinGate\Exception\ApiErrorException $e) {
+            // something went wrong...
+        }
+        
+        return redirect($order->payment_url);
+
+    }
+
+    public function callback(){
+        return 'callback';
+    }
+
+    public function cancel(){
+        return 'cancel';
+    }
+
+    public function success(){
+        return 'success';
+    }
+    public function fail(){
+        return 'fail';
     }
 
 

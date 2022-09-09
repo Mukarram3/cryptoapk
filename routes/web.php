@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\apiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('sendbalance', [apiController::class,'sendbalance']);
+Route::get('coingate-callback', [apiController::class,'callback']);
+Route::get('coingate-cancel', [apiController::class,'cancel']);
+Route::get('coingate-success', [apiController::class,'success']);
+Route::get('coingate-fail', [apiController::class,'fail']);
