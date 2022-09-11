@@ -116,16 +116,16 @@ class AuthController extends Controller
         }
         else{
             
-            $table= sendcode::where('email', $request->email)->first();
+            // $table= sendcode::where('email', $request->email)->first();
 
-            if($table->code==$request->code){
+            // if($table->code==$request->code){
 
                 $data=array();
             $data["name"]=$request->name;
             $data["email"]=$request->email;
             $data["paymentaddress"]=Str::random(30);
             $data["password"]=Hash::make($request->password);
-            $data["verified"]=true;
+            // $data["verified"]=true;
             DB::table('users')->insert($data);
 
                 $credentials = request(['email', 'password']);
@@ -134,11 +134,11 @@ class AuthController extends Controller
 
                 return response()->json(['success' => true, 'token' => $token, 'authuser' => auth()->user()]);
 
-            }
+            // }
 
-            else{
-                return response()->json(['success' => false, 'message' => 'Please enter valide code or resend code']);
-            }
+            // else{
+            //     return response()->json(['success' => false, 'message' => 'Please enter valide code or resend code']);
+            // }
 
             // return $this->login($request);
         }

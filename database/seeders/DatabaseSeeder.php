@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             'type' => 'admin',
             'paymentaddress' => Str::random(30),
             'password' => Hash::make('adminadmin'),
-            'verified' => true
+            // 'verified' => true
             
         ]);
     }

@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->text('balance');
             $table->string('paymentaddress');
             $table->string('type')->default('user');
-            $table->boolean('verified');
+            // $table->boolean('verified');
             $table->rememberToken();
             $table->timestamps();
         });
