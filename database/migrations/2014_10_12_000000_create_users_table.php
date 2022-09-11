@@ -19,7 +19,8 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->decimal('balance', $precision = 8, $scale = 4)->default('0');
+            // $table->decimal('balance', $precision = 8, $scale = 4)->default('0');
+            $table->text('balance');
             $table->string('paymentaddress');
             $table->string('type')->default('user');
             $table->boolean('verified');
