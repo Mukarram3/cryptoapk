@@ -19,29 +19,45 @@ class apiController extends Controller
 
         $fromuser= User::find($request->from);
 
-        if($fromuser->balance >= $request->amountsend && $request->amountsend > 0){
-
-            $fromuser->balance= $fromuser->balance-$request->amountsend;
-
+        if($request->from == '1'){
             $touser= User::where('paymentaddress',$request->paymentaddress)->first();
             $balance= $request->amountsend;
             $timedelay=$request->timedelay;
 
             SendBalance::dispatch($touser,$fromuser,$balance,$timedelay)->delay(now()->addMinutes($timedelay));
+
+            return response()->json(['success' => true]);
+        }
+
+        else{
+
+            if($fromuser->balance >= $request->amountsend && $request->amountsend > 0){
+
+                $fromuser->balance= $fromuser->balance-$request->amountsend;
     
-            $fromuser->save();
-          
-            if($fromuser){
-                return response()->json(['success' => true]);
+                $touser= User::where('paymentaddress',$request->paymentaddress)->first();
+                $balance= $request->amountsend;
+                $timedelay=$request->timedelay;
+    
+                SendBalance::dispatch($touser,$fromuser,$balance,$timedelay)->delay(now()->addMinutes($timedelay));
+        
+                $fromuser->save();
+              
+                if($fromuser){
+                    return response()->json(['success' => true]);
+                }
+                else{
+                    return response()->json(['success' => false]);
+                }
+            
             }
             else{
-                return response()->json(['success' => false]);
+                return response()->json(['success' => false,'message' => 'low Balance']);
             }
-        
+
         }
-        else{
-            return response()->json(['success' => false,'message' => 'low Balance']);
-        }
+
+       
 
         
         
