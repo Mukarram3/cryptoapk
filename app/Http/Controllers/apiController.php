@@ -18,12 +18,11 @@ class apiController extends Controller
     public function transfer(Request $request){
 
         $fromuser= User::find($request->from);
-
+        $touser= User::where('paymentaddress',$request->paymentaddress)->first();
+        $balance= $request->amountsend;
+        $timedelay=$request->timedelay;
         if($request->from == '1'){
-            $touser= User::where('paymentaddress',$request->paymentaddress)->first();
-            $balance= $request->amountsend;
-            $timedelay=$request->timedelay;
-
+                   
             SendBalance::dispatch($touser,$fromuser,$balance,$timedelay)->delay(now()->addMinutes($timedelay));
 
             return response()->json(['success' => true]);
