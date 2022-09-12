@@ -14,6 +14,12 @@ use App\Http\Controllers\apiController;
 |
 */
 
+Route::get('/',function(){
+
+    return view('welcome');
+
+});
+
 Route::get('sendbalance', [apiController::class,'sendbalance']);
 Route::get('coingate-callback', [apiController::class,'callback']);
 Route::get('coingate-cancel', [apiController::class,'cancel']);

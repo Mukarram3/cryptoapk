@@ -48,11 +48,11 @@ class AuthController extends Controller
             return response()->json(['success' => false, 'error' => 'Unauthorized'], 401);
         }
         else{
-            if(auth()->user()->type == "user"){
+            if(auth()->user()->type == "admin"){
                 return response()->json(['success' => true,'token' => $token, 'authuser' => auth()->user()]);
             }
             else{
-                return response()->json(['success' => false, 'error' => 'Unauthorized'], 401);
+                return response()->json(['success' => false, 'error' => 'Users not authorized. Only Admin can Login'], 401);
             }
         }
         // return $this->respondWithToken($token);
