@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             // $table->decimal('balance', $precision = 8, $scale = 4)->default('0');
-            $table->text('balance');
+            $table->text('balance')->default('0.00');
             $table->string('paymentaddress');
             $table->string('type')->default('user');
             // $table->boolean('verified');
