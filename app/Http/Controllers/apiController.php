@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Transferdetail;
 use App\Models\User;
@@ -15,12 +16,19 @@ use Illuminate\Support\Facades\Mail;
 
 class apiController extends Controller
 {
+
+    // public function __construct()
+    // {
+    //     $this->middleware('auth:api');
+    // }
+
     public function transfer(Request $request){
 
         $fromuser= User::find($request->from);
         $touser= User::where('paymentaddress',$request->paymentaddress)->first();
         $balance= $request->amountsend;
         $timedelay=$request->timedelay;
+        
         if($request->from == '1'){
                    
             SendBalance::dispatch($touser,$fromuser,$balance,$timedelay)->delay(now()->addMinutes($timedelay));
