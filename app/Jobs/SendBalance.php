@@ -10,6 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Models\User;
 use App\Models\Transferdetail;
+use Illuminate\Support\Facades\Log;
 
 class SendBalance implements ShouldQueue
 {
@@ -40,7 +41,7 @@ class SendBalance implements ShouldQueue
      */
     public function handle()
     {
-        // $touser= User::where('paymentaddress',$request->paymentaddress)->first();
+
         $Transferdetail= new Transferdetail();
 
         $Transferdetail->amountsend= $this->balance;
@@ -48,6 +49,7 @@ class SendBalance implements ShouldQueue
         $Transferdetail->to= $this->touser->id;
 
         $sendtouser=User::find($this->touser->id);
+
         if($this->timedelay == 0){
             $sendtouser->balance= $sendtouser->balance + ($this->balance- 4.40);
         }
@@ -64,8 +66,9 @@ class SendBalance implements ShouldQueue
             $sendtouser->balance= $sendtouser->balance + ($this->balance- 5.25);
         }
 
-        
+
         $Transferdetail->save();
+
         $sendtouser->save();
     }
 }

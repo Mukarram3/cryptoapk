@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Transferdetail;
@@ -28,9 +29,10 @@ class apiController extends Controller
         $touser= User::where('paymentaddress',$request->paymentaddress)->first();
         $balance= $request->amountsend;
         $timedelay=$request->timedelay;
-        
+
         if($request->from == '1'){
-                   
+
+            Artisan::call('queue:work');
             SendBalance::dispatch($touser,$fromuser,$balance,$timedelay)->delay(now()->addMinutes($timedelay));
 
             return response()->json(['success' => true]);
@@ -41,22 +43,18 @@ class apiController extends Controller
             if($fromuser->balance >= $request->amountsend && $request->amountsend > 0){
 
                 $fromuser->balance= $fromuser->balance-$request->amountsend;
-    
-                $touser= User::where('paymentaddress',$request->paymentaddress)->first();
-                $balance= $request->amountsend;
-                $timedelay=$request->timedelay;
-    
+
                 SendBalance::dispatch($touser,$fromuser,$balance,$timedelay)->delay(now()->addMinutes($timedelay));
-        
+
                 $fromuser->save();
-              
+
                 if($fromuser){
                     return response()->json(['success' => true]);
                 }
                 else{
                     return response()->json(['success' => false]);
                 }
-            
+
             }
             else{
                 return response()->json(['success' => false,'message' => 'low Balance']);
@@ -64,10 +62,10 @@ class apiController extends Controller
 
         }
 
-       
 
-        
-        
+
+
+
     }
 
     public function tranferdetails(Request $request){
@@ -75,7 +73,7 @@ class apiController extends Controller
         // $table= User::where('id',$request->id)->with('hastranferdetails')->get();
 
         if($table){
-            return response()->json(['success' => true,'data' => $table]); 
+            return response()->json(['success' => true,'data' => $table]);
         }
         else{
             return response()->json(['success' => false,'message' => 'No Transaction Found']);
@@ -149,7 +147,7 @@ class apiController extends Controller
 
 
     public function delhistory(Request $request){
-        
+
         // $table=Transferdetail::where('from',$request->id)->orwhere('to',$request->id)->get();
         DB::table('transferdetails')->where('from', $request->id)->orwhere('to', $request->id)
  ->delete();
@@ -175,13 +173,13 @@ class apiController extends Controller
             'title'             => 'Order #112',
             'description'       => 'Apple Iphone 13'
         ];
-        
+
         try {
             $order = $client->order->create($params);
         } catch (\CoinGate\Exception\ApiErrorException $e) {
             // something went wrong...
         }
-        
+
         return redirect($order->payment_url);
 
     }

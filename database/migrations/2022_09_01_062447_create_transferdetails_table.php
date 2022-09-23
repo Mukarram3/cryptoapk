@@ -17,7 +17,7 @@ class CreateTransferdetailsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('from');
             $table->unsignedBigInteger('to');
-            $table->float('amountsend');
+            $table->text('amountsend');
             $table->foreign('from')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('to')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();

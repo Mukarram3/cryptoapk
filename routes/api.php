@@ -43,5 +43,8 @@ Route::group([
 
     Route::post('sendcode',[apiController::class,'sebdverificationcode']);
     Route::post('delhistory',[apiController::class,'delhistory']);
+    Route::get('test',function(){
+        return 'dfdfd';
+    });
 
 });
