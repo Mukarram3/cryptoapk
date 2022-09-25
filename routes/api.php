@@ -43,8 +43,11 @@ Route::group([
 
     Route::post('sendcode',[apiController::class,'sebdverificationcode']);
     Route::post('delhistory',[apiController::class,'delhistory']);
+
+
     Route::get('test',function(){
-        return 'dfdfd';
+        \Illuminate\Support\Facades\Artisan::call('queue:work');
     });
+    Route::get('/transfer-next',[apiController::class,'transfer_next']);
 
 });

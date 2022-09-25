@@ -184,6 +184,10 @@ class apiController extends Controller
 
     }
 
+    public function transfer_next(){
+        return 'sdffsd';
+    }
+
     public function callback(){
         return 'callback';
     }
